@@ -35,9 +35,9 @@ class HoraireType extends AbstractType
                 'Dimanche' => 'Dimanche'
             ],
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             ]
         ])
         ->add('heureouverture', TextType::class, [
@@ -45,9 +45,9 @@ class HoraireType extends AbstractType
             'attr' => ['placeholder' => 'HH:MM'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             new Length(
                 // max length allowed by Symfony for security reasons
                 max: 50,
@@ -64,9 +64,9 @@ class HoraireType extends AbstractType
             'attr' => ['placeholder' => 'HH:MM'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             new Length(
                 // max length allowed by Symfony for security reasons
                 max: 50,

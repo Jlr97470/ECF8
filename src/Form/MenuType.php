@@ -26,9 +26,9 @@ class MenuType extends AbstractType
             'attr' => ['placeholder' => 'Titre du menu'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new Length(
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new Length(
                     // max length allowed by Symfony for security reasons
                     max: 50,
                 )
@@ -41,13 +41,13 @@ class MenuType extends AbstractType
             'attr' => ['placeholder' => 'Nombre de personnes minimum'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]),
-                new GreaterThan([
-                    'value' => 0,
-                    'message' => 'Le nombre de personnes minimum doit être supérieur à 0'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ),
+                new GreaterThan(
+                    value: 0,
+                    message: 'Le nombre de personnes minimum doit être supérieur à 0'
+                )
             ]
         ]);
 
@@ -58,13 +58,13 @@ class MenuType extends AbstractType
             'required' => true,
             'currency' => 'EUR',            
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]),
-                new GreaterThan([
-                    'value' => 0,
-                    'message' => 'Le prix par personne doit être supérieur à 0'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ),
+                new GreaterThan(
+                    value: 0,
+                    message: 'Le prix par personne doit être supérieur à 0'
+                )
             ]
         ]);
 
@@ -72,9 +72,9 @@ class MenuType extends AbstractType
         $builder->add('regime', TextType::class, [  
             'label' => 'Régime',
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new Length(
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new Length(
                     // max length allowed by Symfony for security reasons
                     max: 50,
                 )
@@ -87,9 +87,9 @@ class MenuType extends AbstractType
             'attr' => ['placeholder' => 'Description du menu'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new Length(
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new Length(
                     // max length allowed by Symfony for security reasons
                     max: 50,
                 )
@@ -102,12 +102,12 @@ class MenuType extends AbstractType
             'attr' => ['placeholder' => 'Quantité restante'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]),
-                new PositiveOrZero([
-                    'message' => 'La quantité restante doit être supérieure ou égale à 0'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ),
+                new PositiveOrZero(
+                    message: 'La quantité restante doit être supérieure ou égale à 0'
+                )
             ]
         ]);
 

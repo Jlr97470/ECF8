@@ -23,16 +23,16 @@ class RetrieveType extends AbstractType
                 'attr' => ['placeholder' => 'Email'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide'
+                    ),
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
                     ),
-                    new Email([
-                        'message' => 'Veuillez entrer une adresse email valide',
-                    ]),               
+                    new Email(
+                        message: 'Veuillez entrer une adresse email valide',
+                    ),               
                 ],
             ]);
 

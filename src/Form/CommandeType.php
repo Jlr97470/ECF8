@@ -12,8 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -34,9 +33,9 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Numéro de commande'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new Length(
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new Length(
                     // max length allowed by Symfony for security reasons
                     max: 50,
                 )
@@ -53,9 +52,9 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Date de la commande'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                )
             ]
         ]);
     }    
@@ -87,9 +86,9 @@ class CommandeType extends AbstractType
                 'Annulé' => 'Annulé',
             ],
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]),
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ),
             ],
         ]); 
     }  
@@ -122,9 +121,9 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Date de la prestation'],
             'required' => false,
             'constraints' => [
-                new NotBlank([      
-                    'message' => 'Ce champ ne peut être vide'
-                ])
+                new NotBlank(      
+                    message: 'Ce champ ne peut être vide'
+                )
             ]
         ]);
 
@@ -134,12 +133,12 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Nombre de personnes'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new GreaterThan([
-                    'value' => 0,
-                    'message' => 'Le nombre de personnes doit être supérieur à 0'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new GreaterThan(
+                    value: 0,
+                    message: 'Le nombre de personnes doit être supérieur à 0'
+                )
             ]
         ]);
 
@@ -148,10 +147,10 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Prix du Menu'],
             'currency' => 'EUR',
             'constraints' => [
-                new GreaterThan([
-                    'value' => 0,
-                    'message' => 'Le prix du Menu doit être supérieur à 0'
-                ])
+                new GreaterThan(
+                    value: 0,
+                    message: 'Le prix du Menu doit être supérieur à 0'
+                )
             ],
         ];
 
@@ -166,10 +165,10 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'Prix de livraison'],       
             'currency' => 'EUR',            
             'constraints' => [
-                new GreaterThan([   
-                    'value' => 0,
-                    'message' => 'Le prix de livraison doit être supérieur à 0'
-                ])
+                new GreaterThan(   
+                    value: 0,
+                    message: 'Le prix de livraison doit être supérieur à 0'
+                )
             ],
         ];
 
@@ -184,9 +183,9 @@ class CommandeType extends AbstractType
             'attr' => ['placeholder' => 'HH:MM'],      
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ]), new Length(        
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                ), new Length(        
                     // max length allowed by Symfony for security reasons
                     max: 50,
                 ),

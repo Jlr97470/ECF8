@@ -5,14 +5,13 @@ namespace App\Form;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
+
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -27,9 +26,9 @@ class ProfileType extends AbstractType
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),
                     new Length(
                         6,
                         12,
@@ -44,9 +43,10 @@ class ProfileType extends AbstractType
                 'attr' => ['placeholder' => 'Prénom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    new Length(null, 50),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
+                    new Length(null, 50),
                 ],
             ])
             ->add('nom', TextType::class, [
@@ -54,9 +54,10 @@ class ProfileType extends AbstractType
                 'attr' => ['placeholder' => 'Nom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    new Length(null, 50),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
+                    new Length(null, 50),
                 ],
             ])
             ->add('telephone', TelType::class, [

@@ -39,17 +39,17 @@ class AvisType extends AbstractType
             'attr' => ['placeholder' => 'Note de l\'Avis'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
-            new GreaterThanOrEqual([
-                'value' => 0,
-                'message' => 'La note doit être supérieure ou égale à 0',
-            ]),
-            new LessThanOrEqual([
-                'value' => 5,
-                'message' => 'La note doit être inférieure ou égale à 5',
-            ])
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
+            new GreaterThanOrEqual(
+                value: 0,
+                message: 'La note doit être supérieure ou égale à 0',
+            ),
+            new LessThanOrEqual(
+                value: 5,
+                message: 'La note doit être inférieure ou égale à 5',
+            )
         ]
         ]);
 
@@ -58,9 +58,9 @@ class AvisType extends AbstractType
             'attr' => ['placeholder' => 'Description de l\'Avis'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             new Length(
                 // max length allowed by Symfony for security reasons
                 max: 50,

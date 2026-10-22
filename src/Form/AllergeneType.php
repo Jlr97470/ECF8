@@ -23,9 +23,9 @@ class AllergeneType extends AbstractType
             'attr' => ['placeholder' => 'Libellé de l\'Allergene'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             new Length(
                 // max length allowed by Symfony for security reasons
                 50,

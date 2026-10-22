@@ -21,9 +21,9 @@ class RegimeType extends AbstractType
             'attr' => ['placeholder' => 'Libellé du Regime'],
             'required' => true,
             'constraints' => [
-            new NotBlank([
-                'message' => 'Ce champ ne peut être vide',
-            ]),
+            new NotBlank(
+                message: 'Ce champ ne peut être vide',
+            ),
             new Length(
                 // max length allowed by Symfony for security reasons
                 max: 50,

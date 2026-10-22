@@ -23,9 +23,9 @@ class PlatType extends AbstractType
             'attr' => ['placeholder' => 'Titre du plat'],
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide'
-                ])
+                new NotBlank(
+                    message: 'Ce champ ne peut être vide'
+                )
             ]
         ]);
 

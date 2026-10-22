@@ -27,13 +27,13 @@ class RegistrationType extends AbstractType
                 'attr' => ['placeholder' => 'Email'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide'
+                    ),
                     new Length(null, 50),
-                    new Email([
-                        'message' => 'Veuillez entrer une adresse email valide',
-                    ]),               
+                    new Email(
+                        message: 'Veuillez entrer une adresse email valide',
+                    ),               
                 ],
             ])
             ->add('password', PasswordType::class, [
@@ -41,19 +41,18 @@ class RegistrationType extends AbstractType
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),
                     new Length(
-                        50,
-                        10,
-                        null,
-                        'Votre mot de passe ne peut pas avoir plus de {{ limit }} caractères',
-                        'Votre mot de passe doit avoir au moins {{ limit }} caractères'
+                        max: 50,
+                        min: 10,
+                        maxMessage: 'Votre mot de passe ne peut pas avoir plus de {{ limit }} caractères',
+                        minMessage: 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
                     ),
                     new Regex(
-                        '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
-                        'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
+                        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+                        message: 'Votre mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
                     )
                 ],
             ])
@@ -62,9 +61,9 @@ class RegistrationType extends AbstractType
                 'attr' => ['placeholder' => 'Prénom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),
                     new Length(50),
                 ],
             ])
@@ -73,9 +72,9 @@ class RegistrationType extends AbstractType
                 'attr' => ['placeholder' => 'Nom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),
                     new Length(50),
                 ],
             ])

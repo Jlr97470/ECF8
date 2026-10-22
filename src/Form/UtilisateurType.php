@@ -33,9 +33,9 @@ class UtilisateurType extends AbstractType
                     'Employée' => 'ROLE_USE',
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide'
+                    ),
                 ],
             ]);
     }
@@ -49,16 +49,16 @@ class UtilisateurType extends AbstractType
                 'attr' => ['placeholder' => 'Email'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide'
+                    ),
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
                     ),
-                    new Email([
-                        'message' => 'Veuillez entrer une adresse email valide',
-                    ]),               
+                    new Email(
+                        message: 'Veuillez entrer une adresse email valide',
+                    ),               
                 ],
             ])
             ->add('password', PasswordType::class, [
@@ -66,9 +66,9 @@ class UtilisateurType extends AbstractType
                 'required' => true,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),
                     new Length(
                         min: 10,
                         minMessage: 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
@@ -87,9 +87,10 @@ class UtilisateurType extends AbstractType
                 'attr' => ['placeholder' => 'Prénom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    new Length(
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
+                    new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
                     ),
@@ -100,9 +101,10 @@ class UtilisateurType extends AbstractType
                 'attr' => ['placeholder' => 'Nom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    new Length(
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
+                    new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
                     ),

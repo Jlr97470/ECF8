@@ -25,16 +25,16 @@ class ContactType extends AbstractType
                 'attr' => ['placeholder' => 'Email'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide'
+                    ),
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
                     ),
-                    new Email([
-                        'message' => 'Veuillez entrer une adresse email valide',
-                    ]),
+                    new Email(
+                        message: 'Veuillez entrer une adresse email valide',
+                    ),
                 ]
             ])
             ->add('prenom', TextType::class, [
@@ -42,9 +42,9 @@ class ContactType extends AbstractType
                 'attr' => ['placeholder' => 'Prénom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
@@ -56,9 +56,9 @@ class ContactType extends AbstractType
                 'attr' => ['placeholder' => 'Nom'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
@@ -70,9 +70,9 @@ class ContactType extends AbstractType
                 'attr' => ['placeholder' => 'Titre'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 50,
@@ -84,9 +84,9 @@ class ContactType extends AbstractType
                 'attr' => ['placeholder' => 'Message'],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),                    
+                    new NotBlank(
+                        message: 'Ce champ ne peut être vide',
+                    ),                    
                     new Length(
                         // max length allowed by Symfony for security reasons
                         max: 255,
