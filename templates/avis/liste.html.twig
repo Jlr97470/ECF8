@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des aviss{% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Liste des Avis</h1>
+                    <p class="lead">Voici la liste de tous les avis.</p>
+                </div>
+            </div>
+
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10"></div>
+
+                <div class="col-xs-3 col-sm-2">
+                    {% if (app.user and 'ROLE_USER' in app.user.roles) %}
+                    <a href="{{ path('app_avis_add') }}" role="button" class="btn btn-info text-right">
+                        <i class="fa fa-plus fa-fw"></i> Ajouter
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>   
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'avis.note': 'Note','avis.description': 'Description','avis.statut': 'Statut'}) }}
+            <i class="fa-solid fa-filter" style="color: #0d6efd;"></i> <strong>Filtres disponibles :</strong><br>
+                Statut : Validé, En attente, Rejeté
+            </i>
+        </div>                  
+         <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" {% if pagination.isSorted('avis.note') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Note', 'avis.note') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('avis.description') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Description', 'avis.description') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('avis.statut') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Statut', 'avis.statut') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for avis in pagination %}
+                    <tr>
+                        <th scope="row" colspan="2">
+                            <a href="{{ path('app_avis_index', {'id': avis.avisid}) }}" class="fw-bolder">{{ avis.note|nl2br }}</a>
+                            <p>Description : {{ avis.description|nl2br }}</p>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <p>Statut : {{ avis.statut }}</p>
+                            {% endif %}
+                        </th>
+                        <td>
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_avis_remove', {'id': avis.avisid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ avis.avisid) }}';document.getElementById('delete').submit();}});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="{{ path('app_avis_edit', {'id': avis.avisid}) }}" role="button" class="btn btn-info">Modifier</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>             
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

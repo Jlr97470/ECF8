@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ avis.note }} {% endblock %}
+
+{% block content %}
+    <section>               
+         <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ avis.note }}</h1>
+                </div>
+            </div>
+        </div>
+         <div class="container px-4 px-lg-5 py-3">
+            <p><strong>Description : </strong>{{ avis.description }}</p> 
+             <p><strong>Statut : </strong>{{ avis.statut }}</p> 
+         </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_avis_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                <div class="col-xs-3 col-sm-2">            
+                    <a href="{{ path('app_avis_edit', {'id': avis.avisid}) }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+                {% endif %}
+            </div>        
+        </div> 
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

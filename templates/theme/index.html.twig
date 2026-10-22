@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ theme.libelle }} {% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+         <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ theme.libelle }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <p><strong>Libellé: </strong><br>{{ theme.libelle }}</p>
+        </div>        
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_theme_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles)  %}
+                <div class="col-xs-3 col-sm-2"> 
+                    <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_theme_remove', {'id': theme.themeid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ theme.themeid) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>                                
+                    <a href="{{ path('app_theme_edit', {'id': theme.themeid}) }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+                {% endif %}
+            </div>        
+        </div> 
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2">
+                            <h2>Menus associés : </h2>
+                            <p class="text-muted">Nombre de menus associés : {{ menus|length }}</p>
+                            <p class="text-muted">Liste des menus associés à ce thème. {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}Cliquez sur le titre d'un menu pour voir les détails ou utilisez les boutons pour supprimer des menus de ce thème.{% endif %}</p>
+                        </th>
+                    </tr>
+                </thead>                
+                 <tbody>
+                    {% for menu in menus %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('app_menu_index', {'id': menu.menuid}) }}" class="fw-bolder">{{ menu.titre|nl2br}}</a>
+                            <p>Nb. pers. min : {{ menu.nombrepersonneminimum }}</p>
+                            <p>Prix pers. : {{ menu.prixparpersonne }} €</p>
+                            <p>Régime : {{ menu.regime }}</p>
+                            <p>Qt. rest. : 
+                                {% if menu.quantiterestante > 0 %}
+                                    {{ menu.quantiterestante }}
+                                {% else %}
+                                    <span class="text-danger">Rupture de stock</span>
+                                {% endif %}
+                            </p>
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_theme_menuremove', {'idtheme': theme.themeid, 'idmenu': menu.menuid}) }}';document.getElementById('token').value='{{ csrf_token('delete' ~ menu.menuid) }}';document.getElementById('delete').submit();};});diadialog.showModal();" class="btn btn-danger">Supprimer menu</a>
+                            {% endif %}
+                            {% if (not app.user or 'ROLE_USER' in app.user.roles) %}
+                            <a href="{{ path('app_commande_add', {'idmenu': menu.menuid}) }}" role="button" class="btn btn-danger">Ajouter commande</a>
+                            {% endif %}                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>          
+        </div>
+        {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Liste des Menus</h2>
+                    <p class="text-muted">Nombre total de menus : {{ pagination.getTotalItemCount }}</p>
+                    <p class="text-muted">Liste de tous les menus disponibles. Cliquez sur le titre d'un menu pour voir les détails ou utilisez les boutons pour ajouter des menus à ce thème.</p>
+                </div>
+            </div>        
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'menu.titre': 'Titre','menu.nombre_personne_minimum': 'Nb. pers. min','menu.prix_par_personne': 'Prix pers.','menu.regime': 'Régime','menu.quantite_restante': 'Qt. rest.'}) }}
+        </div>         
+        <div class="container px-4 px-lg-5 py-3">
+            <form method="get" action="{{ path('app_theme_index', {'id': theme.themeid}) }}">
+            <input name="page" type="hidden" value="{{page}}">
+            <input name="sort" type="hidden" value="{{sort}}">
+            <input name="direction" type="hidden" value="{{direction}}">
+            <input name="filterField" type="hidden" value="{{filterField}}">
+            <input name="filterValue" type="hidden" value="{{filterValue}}">
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <input type="money" name="prix_min" id="prix_min" value="{{ prix_min }}" size="30">
+                        <label for="prix_min">Prix min</label>
+                    </div>                  
+                </div>              
+            </div>         
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <input type="money" name="prix_max" id="prix_max" value="{{ prix_max }}" size="30">
+                        <label for="prix_max">Prix max</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <button type="submit" name="action" class="btn btn-lg btn-primary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+                        </button>
+                    </div>
+                </div>
+            </div>          
+            </form>
+        </div>   
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th scope="col" {% if pagination.isSorted('menu.titre') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Titre', 'menu.titre') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.nombre_personne_minimum') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Nb. pers. min', 'menu.nombre_personne_minimum') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.prix_par_personne') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prix pers.', 'menu.prix_par_personne') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.regime') %}} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Régime', 'menu.regime') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.quantite_restante') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Qt. rest.', 'menu.quantite_restante') }}
+                        </th>
+                    </tr>
+                </thead>               
+                <tbody>
+                    {% for menu in pagination %}
+                    <tr>
+                        <th colspan="3" scope="row">
+                            <a href="{{ path('app_menu_index', {'id': menu.menuid}) }}" class="fw-bolder">{{ menu.titre|nl2br}}</a>
+                            <p>Nb. pers. min : {{ menu.nombrepersonneminimum }}</p>
+                            <p>Prix pers. : {{ menu.prixparpersonne }} €</p>
+                            <p>Régime : {{ menu.regime }}</p>
+                            <p>Qt. rest. : 
+                                {% if menu.quantiterestante > 0 %}
+                                    {{ menu.quantiterestante }}
+                                {% else %}
+                                    <span class="text-danger">Rupture de stock</span>
+                                {% endif %}
+                            </p>
+                        </th>
+                        <td colspan="2">
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="{{ path('app_theme_menuadd', {'idtheme': theme.themeid, 'idmenu': menu.menuid}) }}" class="btn btn-info">Ajouter menu</a>
+                            {% else %}
+                            <a href="{{ path('app_commande_add', {'menuid': menu.menuid}) }}" role="button" class="btn btn-danger">Ajouter commande</a>
+                           {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>            
+        </div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

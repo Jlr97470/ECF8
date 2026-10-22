@@ -1,0 +1,47 @@
+{# Pour afficher un champ de formulaire dans un groupe bootstrap #}
+
+{# Attributs du widget #}
+
+
+{# Désactivation du champ #}
+{% if disabled is not defined %}
+    {% set disabled = false %}
+{% endif %}
+{% set attr = attr|merge({'disabled': disabled}) %}
+
+{# Gestion des classes CSS #}
+{% if class is defined %}
+    {% set attr = attr|merge({'class': class}) %}
+{% endif %}
+
+{#{ dump(attr) }#}
+
+<div class="form-group {% if field.vars.errors|length %}has-error{%endif%}">
+    <div class="material-textfield">
+   
+    {# 
+        Les champs désactivés sont dupliqués au travers d'un champ caché 
+        pour que la valeur ne soit pas perdue côté serveur
+        Les champs ont le même nom, aussi il faut y accéder en js via l'identifiant du champ
+    #}
+        {{ form_widget(field,  attr ) }}
+        {{ form_label(field) }}
+    </div>
+    {% if disabled %}
+        {% set type = field.vars.block_prefixes.1 %}
+        
+        {% if type!='checkbox' %}
+            <input type="hidden" name="{{ field.vars.full_name }}" value="{{ field.vars.value }}" />
+        {% else %}
+            <input type="checkbox" name="{{ field.vars.full_name }}" {{ field.vars.checked?'checked':'' }} style="display: none" />
+        {% endif %}
+    {% endif %}
+
+    {% if help is defined %}
+    <p class="help-block">
+        {{ help|raw }}
+    </p>
+    {% endif %}
+    
+    {{ form_errors(field) }}
+</div>

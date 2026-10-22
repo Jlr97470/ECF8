@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Menu{% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Liste des Menus</h1>
+                    <p class="lead">Voici la liste de tous les menus.</p>
+                </div>
+            </div>
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10"></div>
+
+                <div class="col-xs-3 col-sm-2">
+                    {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                    <a href="{{ path('app_menu_add') }}" role="button" class="btn btn-info text-right">
+                        <i class="fa fa-plus fa-fw"></i> Ajouter
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'menu.titre': 'Titre','menu.nombre_personne_minimum': 'Nb. pers. min','menu.prix_par_personne': 'Prix pers.','menu.regime': 'Régime','menu.quantite_restante': 'Qt. rest.'}) }}
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <form method="get" action="{{ path('app_menu_liste') }}">
+            <input name="page" type="hidden" value="{{page}}">
+            <input name="sort" type="hidden" value="{{sort}}">
+            <input name="direction" type="hidden" value="{{direction}}">
+            <input name="filterField" type="hidden" value="{{filterField}}">
+            <input name="filterValue" type="hidden" value="{{filterValue}}">
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <input type="money" name="prix_min" id="prix_min" value="{{ prix_min }}" size="30">
+                        <label for="prix_min">Prix min</label>
+                    </div>                  
+                </div>              
+            </div>         
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <input type="money" name="prix_max" id="prix_max" value="{{ prix_max }}" size="30">
+                        <label for="prix_max">Prix max</label>
+                    </div>
+                </div>
+            </div>
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                <div class="form-group">
+                    <div class="material-textfield">
+                        <button type="submit" name="action" class="btn btn-lg btn-primary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+                        </button>
+                    </div>
+                </div>
+            </div>          
+            </form>
+        </div>   
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th scope="col" {% if pagination.isSorted('menu.titre') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Titre', 'menu.titre') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.nombre_personne_minimum') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Nb. pers. min', 'menu.nombre_personne_minimum') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.prix_par_personne') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prix pers.', 'menu.prix_par_personne') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.regime') %}} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Régime', 'menu.regime') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.quantite_restante') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Qt. rest.', 'menu.quantite_restante') }}
+                        </th>
+                    </tr>
+                </thead>               
+                <tbody>
+                    {% for menu in pagination %}
+                    <tr>
+                        <th colspan="3" scope="row">
+                            <a href="{{ path('app_menu_index', {'id': menu.menuid}) }}" class="fw-bolder">{{ menu.titre|nl2br}}</a>
+                            <p>Nb. pers. min : {{ menu.nombrepersonneminimum }}</p>
+                            <p>Prix pers. : {{ menu.prixparpersonne }} €</p>
+                            <p>Régime : {{ menu.regime }}</p>
+                            <p>Qt. rest. : 
+                                {% if menu.quantiterestante > 0 %}
+                                    {{ menu.quantiterestante }}
+                                {% else %}
+                                    <span class="text-danger">Rupture de stock</span>
+                                {% endif %}
+                            </p>
+                        </th>
+                        <td colspan="2">
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_menu_remove', {'id': menu.menuid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ menu.menuid) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                            <a href="{{ path('app_menu_edit', {'id': menu.menuid}) }}" role="button" class="btn btn-info">Modifier</a>
+                            {% endif %}
+                            {% if (not app.user or 'ROLE_USER' in app.user.roles) %}
+                            <a href="{{ path('app_commande_add', {'idmenu': menu.menuid}) }}" role="button" class="btn btn-danger">Ajouter commande</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>            
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

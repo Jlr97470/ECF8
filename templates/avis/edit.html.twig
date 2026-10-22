@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis{% endblock %}
+
+{% block content %}
+    <section>               
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{% if mode == 'new' %}Ajout{% else %}Modification{% endif %} - Avis</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+
+            {# ------------------------- #}
+            {#      INFOS GÉNÉRALES      #}
+            {# ------------------------- #}
+            {% if mode == 'update' %}
+            <div class="row" >
+                <h4 class="col-lg-12">
+                    <a data-group data-toggle="collapse" href="#info"><i class="fa fa-angle-double-down fa-fw"></i> Informations générales</a>
+                </h4>
+            </div>
+            {% endif %}
+        </div>
+       <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_avis_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+            </div>        
+        </div> 
+        <div class="container px-4 px-lg-5 py-3">
+            {{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate' }} ) }}
+
+            <div id="info" class="panel-collapse">
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">                       
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['note'], 'attr': {'attr':{'size': '30'}}
+                        }) }}   
+                </div>
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">                       
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['description'], 'attr': {'attr':{'size': '30'}}
+                        }) }}
+                </div>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">                       
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['statut'], 'attr': {'attr':{'size': '3'}}
+                        }) }}   
+                </div>                        
+                {% endif %} 
+            </div>        
+            <div class="row">
+                {% if not form.vars.valid %}
+                <div class="col-md-8">
+                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                    <i class="error">
+                        Le formulaire contient des erreurs. Vérifiez les différentes rubriques.
+                    </i>
+                </div>
+                {% else %}
+                    <div class="col-md-8"></div>
+                {% endif %} 
+                <div class="col-md-8 text-right">
+                    {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-info'} }) }}
+                </div>
+            </div>
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

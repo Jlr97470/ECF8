@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recupération de mot de passe{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container  px-4 px-lg-5 my-5">
+            <h1>Recupération de mot de passe</h1>      
+            {{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate' }} ) }}
+            <div class="input-field col s12 m6 l6 offset-m3 offset-l3">        
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['email'], 'attr': {'attr':{'size': '25'}}
+                        }) }}
+            </div>
+             <div class="row">
+                {% if not form.vars.valid %}
+                <div class="col-md-8 error">
+                    <i class="fa fa-exclamation-triangle fa-fw">
+                    Le formulaire contient des erreurs. Vérifiez les différentes rubriques.
+                    </i>
+                </div>
+                {% else %}
+                    <div class="col-md-8"></div>
+                {% endif %} 
+                <div class="col-md-8 text-right">
+                    {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-info'} }) }}
+                </div>
+            </div>
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

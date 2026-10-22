@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des aviss{% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Liste des Allergenes</h1>
+                    <p class="lead">Voici la liste de tous les allergènes.</p>
+                </div>
+            </div>
+
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10"></div>
+
+                <div class="col-xs-3 col-sm-2">
+                    {% if (app.user and 'ROLE_ADMIN' in app.user.roles)  %}
+                    <a href="{{ path('app_allergene_add') }}" role="button" class="btn btn-info text-right">
+                        <i class="fa fa-plus fa-fw"></i> Ajouter
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'allergene.libelle': 'Libellé'}) }}
+        </div>                     
+         <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2" scope="col" {% if pagination.isSorted('allergene.libelle') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Libellé', 'allergene.libelle') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for allergene in pagination %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('app_allergene_index', {'id': allergene.allergeneid}) }}" class="fw-bolder">{{ allergene.libelle|nl2br }}</a>
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_allergene_remove', {'id': allergene.allergeneid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ allergene.allergeneid) }}';document.getElementById('delete').submit();}});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                            <a href="{{ path('app_allergene_edit', {'id': allergene.allergeneid}) }}" role="button" class="btn btn-info">Modifier</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>             
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

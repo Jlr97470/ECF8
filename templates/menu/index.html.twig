@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ menu.titre }} {% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+         <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ menu.titre }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2">
+                            <h2>Thème associé : </h2>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            {% if theme %}
+                                <a href="{{ path('app_theme_index', {'id': theme.themeid}) }}" class="fw-bolder">{{ theme.libelle }}</a>
+                            {% else %}
+                                <span class="text-muted">Aucun thème associé</span>
+                            {% endif %}
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2">
+                            <h2>Régime associé : </h2>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            {% if regime %}
+                                <a href="{{ path('app_regime_index', {'id': regime.regimeid}) }}" class="fw-bolder">{{ regime.libelle }}</a>
+                            {% else %}
+                                <span class="text-muted">Aucun régime associé</span>
+                            {% endif %}
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container px-4 px-lg-5 py-3">
+            <p><strong>Nombre de personnes minimum : </strong><br>{{ menu.nombrepersonneminimum }}</p>
+            <p><strong>Prix par personne : </strong><br>{{ menu.prixparpersonne }} €</p>
+            <p><strong>Régime : </strong><br>{{ menu.regime }}</p>
+            <p><strong>Quantité restante : </strong><br>
+                {% if menu.quantiterestante > 0 %}
+                    {{ menu.quantiterestante }}
+                {% else %}
+                    <span class="text-danger">Rupture de stock</span>
+                {% endif %}
+            </p>
+            <p>
+                <strong>Description : </strong><br>{{ menu.description|nl2br }}
+            </p>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_menu_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                <div class="col-xs-3 col-sm-2">   
+                    <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_menu_remove', {'id': menu.menuid}) }}';document.getElementById('_token').value='{{ csrf_token('delete'~ menu.menuid) }}';document.getElementById('delete').submit();};});document.getElementById('diadialog').showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path('app_menu_edit', {'id': menu.menuid}) }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+                {% endif %}
+                {% if (not app.user or 'ROLE_USER' in app.user.roles) %}
+                <div class="col-xs-3 col-sm-2">            
+                    <a href="{{ path('app_commande_add', {'idmenu': menu.menuid}) }}" role="button" class="btn btn-danger">Ajouter commande</a>
+                </div>
+                {% endif %}                
+            </div>        
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2">
+                            <h2>Plats associés : </h2>
+                            <p class="text-muted">Nombre de plats associés : {{ plats|length }}</p>
+                            <p class="text-muted">Liste des plats associés à ce menu. {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}Cliquez sur le titre d'un plat pour voir les détails ou utilisez les boutons pour supprimer des plats à ce menu..{% endif %}</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plat in plats %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('app_plat_index', {'id': plat.platid}) }}" class="fw-bolder">{{ plat.titreplat }}</a>
+                            <p><img src="{{ path('app_plat_photo', {'id': plat.platid}) }}" alt="{{ plat.titreplat }}" class="img-fluid"></p>
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_menu_platremove', {'idmenu': menu.menuid, 'idplat': plat.platid}) }}';document.getElementById('_token').value='{{ csrf_token('delete'~ plat.platid) }}';document.getElementById('delete').submit();};});document.getElementById('diadialog').showModal();" class="btn btn-danger">Supprimer plat</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Liste des Plats</h2>
+                    <p class="text-muted">Nombre total de plats : {{ pagination.getTotalItemCount }}</p>
+                    <p class="text-muted">Liste de tous les plats disponibles. Cliquez sur le titre d'un plat pour voir les détails ou utilisez les boutons pour ajouter des plats à ce menu.</p>
+                </div>
+            </div>        
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'plat.titre_plat': 'Titre'}) }}
+        </div>         
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2" scope="col" {% if pagination.isSorted('plat.titre_plat') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Titre', 'plat.titre_plat') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plat in pagination %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('app_plat_index', {'id': plat.platid}) }}" class="fw-bolder">{{ plat.titreplat|nl2br }}</a>
+                            <p><img src="{{ path('app_plat_photo', {'id': plat.platid}) }}" alt="{{ plat.titreplat }}" class="img-fluid"></p>
+                        </th>
+                        <td>
+                            <a href="{{path('app_menu_platadd',{'idmenu':menu.menuid,'idplat':plat.platid})}}" class="btn btn-success">Ajouter plat</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>             
+        </div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

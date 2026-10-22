@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Vite &amp;<img src="{{ email.image('@images/favicon.png' )}}" alt="Logo"> Gourmand !</h1>
+        <p>Bonjour {{ prenom }} {{ nom }},</p>
+        <p>Votre commande est terminée.</p>
+        <p><strong>Date de la commande : </strong><br>{{ commande.datecommande|date('d/m/Y') }}</p>
+        <p><strong>Date de la prestation : </strong><br>{{ commande.dateprestation|date('d/m/Y') }}</p>
+        <p><strong>Menu : </strong><br>
+        <p><strong>{{ commande.menuId.titre }}</strong></p>
+        <p><strong>Client : </strong><br>{{ commande.utilisateurId.prenom }} {{ commande.utilisateurId.nom }}</p>
+        <p><strong>Adresse : </strong><br>{{ commande.utilisateurId.adressepostal }}</p>
+        <p><strong>Ville : </strong><br>{{ commande.utilisateurId.ville }}</p>
+        <p><strong>Pays : </strong><br>{{ commande.utilisateurId.pays }}</p>
+        <p><strong>Telephone : </strong><br>{{ commande.utilisateurId.telephone }}</p>
+        <p><strong>Heure de livraison : </strong><br>{{ commande.heurelivraison }}</p>
+        <p><strong>Prix du Menu : </strong><br>{{ commande.prixmenu }} €</p>
+        <p><strong>Nombre de personnes : </strong><br>{{ commande.nombrepersonne }}</p>
+        <p><strong>Prix de livraison : </strong><br>{{ commande.prixlivraison }} €</p> 
+        <p><strong>Statut : </strong><br>{{ commande.statut }}</p>
+        <p><strong>Pret de matériel : </strong><br>{{ commande.pretmateriel ? 'Oui' : 'Non' }}</p>
+        <p><strong>Restitution de matériel : </strong><br>{{ commande.restitutionmateriel ? 'Oui' : 'Non' }}</p>
+        <p>Vous pouvez donner votre avis sur votre commande à tout moment sur notre site.</p>
+        <p><a href="{{ absolute_url('avis/liste') }}">Donner un avis</a></p>
+        <p>
+            <strong>Nom / Raison sociale :</strong> <span data-placeholder-token="true">Vite &amp; Gourmand</span><br>
+            <strong>Statut juridique :</strong> <span data-placeholder-token="true">SARL</span><br>
+            <strong>Adresse :</strong> <span data-placeholder-token="true">4 Rue du 11 novembre, 33000 Bordeaux, France</span><br>
+            <strong>Téléphone :</strong> <span data-placeholder-token="true">0134682601</span><br>
+            <strong>Email :</strong> <span data-placeholder-token="true">contact@viteetgourmand.fr</span><br>
+            <strong>SIRET / SIREN :</strong> <span data-placeholder-token="true">123456789123456789</span><br>
+        </p>        
+    </body>
+</html>

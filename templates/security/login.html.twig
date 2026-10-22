@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container px-4 px-lg-5 py-3">
+            <form method="post">
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connecté en tant que {{ app.user.nom }} {{ app.user.prenom }}, <a href="{{ path('app_security_logout') }}">Déconnectez-vous.</a>
+                    </div>
+                {% endif %}
+                <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+                <div class="material-textfield">
+                    <input type="email" value="{{ last_username }}" name="email" id="inputUsername" class="form-control" autocomplete="email" required autofocus>
+                    <label for="inputUsername">Email d'utilisateur</label>
+                </div>
+                <br/><br/>                
+                <div class="material-textfield">
+                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    <label for="inputPassword">Mot de passe</label>
+                </div>
+                <br/><br/>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="material-textfield">
+                    <input type="checkbox" name="_remember_me" id="inputRememberMe">
+                    <label for="inputRememberMe"><br/>Se souvenir de moi</label>
+                </div>
+                <br/><br/> 
+
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                    <div class="me-md-2">
+                        <button class="btn btn-lg btn-primary" type="submit">
+                            Connexion
+                        </button>
+                    </div>
+                    <div class="me-md-2">
+                        <a href="{{ path('app_registration_retrieve') }}" role="button" class="btn btn-lg btn-secondary">Mot de passe oublié ?</a>
+                    </div>
+                    <div class="me-md-2">
+                        <a href="{{ path('app_registration_register') }}" role="button" class="btn btn-lg btn-primary">S'inscrire</a> 
+                    </div>
+                </div>        
+            </form>
+        </div>
+    </section>
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ profile.nom }} {{ profile.prenom }}{% endblock %}
+
+{% block content %}
+    <section>                
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ profile.nom }} {{ profile.prenom }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <p><strong>Email : </strong><br>{{ profile.email }}</p>
+            <p><strong>Téléphone : </strong><br>{{ profile.telephone }}</p>
+            <p><strong>Ville : </strong><br>{{ profile.ville }}</p>
+            <p><strong>Pays : </strong><br>{{ profile.pays }}</p>
+            <p><strong>Adresse Postale : </strong><br>{{ profile.adressepostal|nl2br }}</p>
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    
+                </div>
+                <div class="col-xs-3 col-sm-2">            
+                    <a href="{{ path('app_profile_edit') }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <section>               
+        <div class="container px-4 px-lg-5 py-3">
+            <h1 class="display-5 fw-bolder">Accueil</h1> 
+            <p><h2 class="fw-bolder mb-4">Présentation de l’entreprise Vite &amp; Gourmand</h2></p>
+            <p><img src="{{ asset('images/entreprise.png') }}" alt="Vite & Gourmand" class="img-fluid"></p>
+            <p>Fondée il y a 25 ans à Bordeaux, Vite &amp; Gourmand est une entreprise à taille humaine portée par deux passionnés : Julie et José. Depuis un quart de siècle, ils mettent leur savoir-faire et leur créativité au service de leurs clients afin de proposer des prestations culinaires adaptées à tous types d’événements.</p>
+            <p>Spécialisée dans la préparation de repas pour des occasions variées, l’entreprise accompagne aussi bien les célébrations familiales que les fêtes traditionnelles telles que Noël ou Pâques. Chaque prestation est pensée avec soin afin de garantir qualité, fraîcheur et saveur.</p>
+            <p>L’un des atouts majeurs de Vite &amp; Gourmand réside dans son menu en constante évolution. Julie et José renouvellent régulièrement leurs propositions pour s’adapter aux saisons, aux tendances culinaires et aux attentes de leur clientèle. Cette capacité d’adaptation leur permet d’offrir une expérience gourmande toujours renouvelée, tout en conservant l’authenticité et la convivialité qui font leur réputation.</p>
+            <p>Choisir Vite &amp; Gourmand, c’est faire confiance à une entreprise locale expérimentée, attentive aux détails et engagée à faire de chaque événement un moment savoureux et mémorable.</p>
+            <p><h2 class="fw-bolder mb-4">Mise en avant du professionnalisme de l’équipe</h2></p>
+            <p><img src="{{ asset('images/equipe.png') }}" alt="Vite & Gourmand" class="img-fluid"></p>
+            <p>Vite &amp; Gourmand, c’est avant tout une équipe de professionnels passionnés et dévoués à la réussite de chaque prestation. Julie et José, les fondateurs de l’entreprise, incarnent parfaitement ce professionnalisme à travers leur expertise, leur rigueur et leur engagement envers leurs clients.</p>
+            <p>Implantée depuis 25 ans à Bordeaux, Vite & Gourmand s’appuie sur l’expertise et la complémentarité de ses deux fondateurs, Julie et José. Leur longévité témoigne de leur sérieux, de leur constance et de la confiance accordée par leurs clients au fil des années.</p>
+            <p>Grâce à leur expérience, Julie et José maîtrisent parfaitement l’organisation et la gestion de prestations pour tous types d’événements, qu’il s’agisse d’un simple repas convivial ou de célébrations plus importantes comme Noël ou Pâques. Chaque demande est étudiée avec attention afin de proposer une offre personnalisée, adaptée aux besoins et aux attentes spécifiques de leurs clients.</p>
+            <p>Le professionnalisme de l’équipe se reflète également dans la qualité des produits sélectionnés, le respect des délais, la rigueur dans la préparation et le soin apporté à la présentation des plats. Leur menu en constante évolution démontre leur capacité d’adaptation, leur créativité et leur volonté d’innover tout en maintenant un haut niveau d’exigence.</p>
+            <p>Avec Vite &amp; Gourmand, les clients bénéficient d’un service fiable, organisé et attentif, assuré par deux professionnels passionnés qui mettent leur savoir-faire au service de la réussite de chaque événement.</p>
+        </div>
+    </section>
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Engagement envers la satisfaction client</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for avis in avis %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">Note</h5>
+                                {{ avis.note }}/5
+                            </div>
+                            <div class="text-center">
+                                {{ avis.description|nl2br }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container px-4 px-lg-5 py-3">
+            <h1>Besoin d'aide ? Contactez-nous !</h1>
+            <p>Nous vous conseillons personnellement et répondons à toutes vos questions.</p>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate' }} ) }}
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <div id="info" class="panel-collapse">
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['prenom'], 'attr': {'attr': {'size': '30'}}
+                        }) }}  
+                </div>
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">        
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['nom'], 'attr': {'attr':{'size': '30'}}
+                        }) }}
+                </div>  
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['email'], 'attr': {'attr': {'size': '30'}}
+                        }) }}  
+                </div>
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['titre'], 'attr': {'attr': {'size': '30'}}
+                        }) }}  
+                </div>
+                <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
+                {{ include('helpers/form/group.html.twig', {
+                            'field': form['message'], 'attr': {'attr': {'rows': '4', 'cols': '30'}}
+                        }) }}                   
+                </div>
+            </div>        
+
+            <div class="row">
+                {% if not form.vars.valid %}
+                <div class="col-md-8">
+                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                    <i class="error">
+                        Le formulaire contient des erreurs. Vérifiez les différentes rubriques.
+                    </i>
+                </div>
+                {% else %}
+                    <div class="col-md-8"></div>
+                {% endif %} 
+                <div class="col-md-8 text-right">
+                    {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-info'} }) }}
+                </div>
+            </div>
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </section>    
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

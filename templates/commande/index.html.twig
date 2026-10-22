@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ commande.numerocommande }} {% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+         <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ commande.numerocommande }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row">
+                <div class="col mb-5">            
+                    <p><strong>Date de la commande : </strong><br>{{ commande.datecommande|date('d/m/Y') }}</p>
+                    <p><strong>Date de la prestation : </strong><br>{{ commande.dateprestation|date('d/m/Y') }}</p>
+                    <p><strong>Menu : </strong><br>
+                {% if commande.menuId %}
+                    <a href="{{ path('app_menu_index', {'id': commande.menuId.menuid}) }}" class="fw-bolder">{{ commande.menuId.titre }}</a>
+                {% else %}
+                            Aucun menu associé
+                {% endif %}
+                    </p>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                    <p><strong>Client : </strong><br><a href="{{path('app_utilisateur_index',{'id':commande.utilisateurId.utilisateurid}) }}"  class="fw-bolder"> {{ commande.utilisateurId.prenom }} {{ commande.utilisateurId.nom }}</a></p>
+                {% else %}
+                    <p><strong>Client : </strong><br>{{ commande.utilisateurId.prenom }} {{ commande.utilisateurId.nom }}</p>
+                {% endif %}
+                    <p><strong>Adresse : </strong><br>{{ commande.utilisateurId.adressepostal }}</p>
+                    <p><strong>Ville : </strong><br>{{ commande.utilisateurId.ville }}</p>
+                    <p><strong>Pays : </strong><br>{{ commande.utilisateurId.pays }}</p>
+                    <p><strong>Telephone : </strong><br>{{ commande.utilisateurId.telephone }}</p>
+                </div>
+                <div class="col mb-5">
+                    <p><strong>Heure de livraison : </strong><br>{{ commande.heurelivraison }}</p>
+                    <p><strong>Prix du Menu : </strong><br>{{ commande.prixmenu }} €</p>
+                    <p><strong>Nombre de personnes : </strong><br>{{ commande.nombrepersonne }}</p>
+                    <p><strong>Prix de livraison : </strong><br>{{ commande.prixlivraison }} €</p> 
+                    <p><strong>Statut : </strong><br>{{ commande.statut }}</p>
+                    <p><strong>Pret de matériel : </strong><br>{{ commande.pretmateriel ? 'Oui' : 'Non' }}</p>
+                    <p><strong>Restitution de matériel : </strong><br>{{ commande.restitutionmateriel ? 'Oui' : 'Non' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_commande_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+                <div class="col-xs-3 col-sm-2">  
+                    {% if commande.statut == 'En cours' %}
+                    <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_commande_remove', {'id': commande.numerocommande}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ commande.numerocommande) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                    {% endif %}                             
+                    <a href="{{ path('app_commande_edit', {'id': commande.numerocommande}) }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+            </div>        
+        </div>
+        {% if ((app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles)) and commande.statut == 'En cours' %}
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Liste des Menus</h2>
+                    <p class="text-muted">Nombre total de menus : {{ pagination.getTotalItemCount }}</p>
+                    <p class="text-muted">Liste de tous les menus disponibles. Cliquez sur le titre d'un menu pour voir les détails ou utilisez les boutons pour ajouter des menus à cette commande.</p>
+                </div>
+            </div>        
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'menu.titre': 'Titre','menu.nombre_personne_minimum': 'Nb. pers. min','menu.prix_par_personne': 'Prix pers.','menu.regime': 'Régime','menu.quantite_restante': 'Qt. rest.'}) }}
+        </div>         
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th scope="col" {% if pagination.isSorted('menu.titre') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Titre', 'menu.titre') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.nombre_personne_minimum') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Nb. pers. min', 'menu.nombre_personne_minimum') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.prix_par_personne') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prix pers.', 'menu.prix_par_personne') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.regime') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Régime', 'menu.regime') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('menu.quantite_restante') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Qt. rest.', 'menu.quantite_restante') }}
+                        </th>
+                    </tr>
+                </thead>  
+                <tbody>
+                    {% for menu in pagination %}
+                    <tr>
+                        <th colspan="4" scope="row">
+                            <a href="{{ path('app_menu_index', {'id': menu.menuid}) }}" class="fw-bolder">{{ menu.titre|nl2br}}</a>
+                            <p>Nb. pers. min : {{ menu.nombrepersonneminimum }}</p>
+                            <p>Prix pers. : {{ menu.prixparpersonne }} €</p>
+                            <p>Régime : {{ menu.regime }}</p>
+                            <p>Qt. rest. : 
+                                {% if menu.quantiterestante > 0 %}
+                                    {{ menu.quantiterestante }}
+                                {% else %}
+                                    <span class="text-danger">Rupture de stock</span>
+                                {% endif %}
+                            </p>
+                        </th>
+                        <td>
+                            {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                            <a href="{{path('app_commande_menuadd',{'idcommande':commande.numerocommande,'idmenu':menu.menuid})}}" class="btn btn-success">Ajouter menu</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>             
+        </div>
+       {% endif %}
+    </section>    
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}

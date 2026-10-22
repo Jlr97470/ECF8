@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Utilisateur{% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Liste des Utilisateurs</h1>
+                    <p class="lead">Voici la liste de tous les utilisateurs.</p>
+                </div>
+            </div>
+
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10"></div>
+
+                <div class="col-xs-3 col-sm-2">
+                    {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('app_utilisateur_add') }}" role="button" class="btn btn-info text-right">
+                        <i class="fa fa-plus fa-fw"></i> Ajouter
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>            
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'utilisateur.nom': 'Nom', 'utilisateur.prenom': 'Prénom', 'utilisateur.email': 'Email'}) }}
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" {% if pagination.isSorted('utilisateur.nom') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Nom', 'utilisateur.nom') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('utilisateur.prenom') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prénom', 'utilisateur.prenom') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('utilisateur.email') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Email', 'utilisateur.email') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for utilisateur in pagination %}
+                    <tr>
+                        <th colspan="2" class="col">
+                            <a href="{{ path('app_utilisateur_index', {'id': utilisateur.utilisateurid}) }}" class="fw-bolder">{{ utilisateur.prenom }} {{ utilisateur.nom }}</a>
+                            <p class="text-muted">{{ utilisateur.email|nl2br }}</p>
+                            <p>{% if 'ROLE_ADMIN' in utilisateur.roles %}Administrateur{% elseif 'ROLE_USE' in utilisateur.roles %}Employé{% else %}Utilisateur{% endif %}</p>
+                        </th>
+                        <td>
+                            {% if (utilisateur and 'ROLE_ADMIN' not in utilisateur.roles and app.user.utilisateurid != utilisateur.utilisateurid)  %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_utilisateur_remove', {'id': utilisateur.utilisateurid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ utilisateur.utilisateurid) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                            {% endif %}
+                            {% if (utilisateur and 'ROLE_ADMIN' not in utilisateur.roles and app.user.utilisateurid != utilisateur.utilisateurid) or (app.user.utilisateurid == utilisateur.utilisateurid)  %}
+                            <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.utilisateurid}) }}" role="button" class="btn btn-info">Modifier</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>             
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

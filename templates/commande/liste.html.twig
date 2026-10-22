@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Commande{% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+        <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Liste des Commandes</h1>
+                    <p class="lead">Voici la liste de toutes les commandes.</p>
+                </div>
+            </div>
+
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10"></div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            {{ knp_pagination_filter(pagination, {'commande.numero_commande': 'Numero commande', 'commande.date_commande': 'Date commande', 'commande.date_prestation': 'Date prestation', 'commande.heure_livraison': 'Heure livraison', 'commande.prix_menu': 'Prix menu', 'commande.nombre_personne': 'Nb. personnes', 'commande.prix_livraison': 'Prix livraison', 'commande.statut': 'Statut', 'commande.pret_materiel': 'Pret matériel', 'commande.restitution_materiel': 'Restitution matériel'}) }}
+            <i class="fa-solid fa-filter" style="color: #0d6efd;"></i> 
+            <i></i><strong>Filtres disponibles :</strong><br>
+                Date format : aaaa-mm-jj<br>
+                Statut : En cours, Accepté, En préparation, En cours de livraison, Livré, En attente du retour de matériel, Terminé, Annulé<br>
+                Pret mat. et Rest. mat. : 1, 0 ou true, false <br>                  
+            </i>
+        </div>                
+        <div class="container px-4 px-lg-5 py-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {# sorting of properties based on query components #}
+                        <th scope="col" {% if pagination.isSorted('commande.numero_commande') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Num. comm.', 'commande.numero_commande') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.date_commande') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Date com.', 'commande.date_commande') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.date_prestation') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Date prest.', 'commande.date_prestation') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.heure_livraison') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Heure livr.', 'commande.heure_livraison') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.prix_menu') %}} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prix menu', 'commande.prix_menu') }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" {% if pagination.isSorted('commande.nombre_personne') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Nb. pers.', 'commande.nombre_personne') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.prix_livraison') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Prix livr.', 'commande.prix_livraison') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.statut') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Statut', 'commande.statut') }}
+                        </th>
+                        <th scope="col" {% if pagination.isSorted('commande.pret_materiel') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Pret mat.', 'commande.pret_materiel') }}
+                        </th>   
+                        <th scope="col" {% if pagination.isSorted('commande.restitution_materiel') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Rest. mat.', 'commande.restitution_materiel') }}
+                        </th>
+                    </tr>
+                </thead>               
+                <tbody>
+                    {% for commande in pagination %}
+                    <tr>
+                        <th colspan="3" scope="row">
+                            <div class="row">
+                                <div class="col mb-5">
+                                    <a href="{{ path('app_commande_index', {'id': commande.numerocommande}) }}" class="fw-bolder">{{ commande.numerocommande }}</a>
+                                    <p>Date de la commande : <br>{{ commande.datecommande|date('d/m/Y') }}</p>
+                                    <p>Date de la prestation : <br>{{ commande.dateprestation|date('d/m/Y') }}</p>
+                                    <p>Menu : <br>
+                                        {% if commande.menuId %}
+                                            <a href="{{ path('app_menu_index', {'id': commande.menuId.menuid}) }}" class="fw-bolder">{{ commande.menuId.titre }}</a>
+                                        {% else %}
+                                            Aucun menu associé
+                                        {% endif %}
+                                    </p>
+                                    {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                                    <p>Client : <br><a href="{{path('app_utilisateur_index',{'id':commande.utilisateurId.utilisateurid}) }}"  class="fw-bolder"> {{ commande.utilisateurId.prenom }} {{ commande.utilisateurId.nom }}</a></p>
+                                    {% else %}
+                                    <p>Client : <br>{{ commande.utilisateurId.prenom }} {{ commande.utilisateurId.nom }}</p>
+                                    {% endif %}
+                                    <p>Adresse : <br>{{ commande.utilisateurId.adressepostal }}</p>
+                                    <p>Ville : <br>{{ commande.utilisateurId.ville }}</p>
+                                    <p>Pays : <br>{{ commande.utilisateurId.pays }}</p>
+                                    <p>Telephone : <br>{{ commande.utilisateurId.telephone }}</p>                            
+                                </div>
+                                <div class="col mb-5">
+                                    <p>Heure de livraison : <br>{{ commande.heurelivraison }}</p>
+                                    <p>Prix du Menu : <br>{{ commande.prixmenu }} €</p>
+                                    <p>Nombre de personnes : <br>{{ commande.nombrepersonne }}</p>
+                                    <p>Prix de livraison : <br>{{ commande.prixlivraison }} €</p> 
+                                    <p>Statut : <br>{{ commande.statut }}</p>
+                                    <p>Pret de matériel : <br>{{ commande.pretmateriel ? 'Oui' : 'Non' }}</p>
+                                    <p>Restitution de matériel : <br>{{ commande.restitutionmateriel ? 'Oui' : 'Non' }}</p>
+                                </div>
+                            </div>
+                        </th>
+                        <td colspan="2" >
+                            {% if commande.statut == 'En cours' %}
+                            <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_commande_remove', {'id': commande.numerocommande}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ commande.numerocommande) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                            {% endif %}
+                            <a href="{{ path('app_commande_edit', {'id': commande.numerocommande}) }}" role="button" class="btn btn-info">Modifier</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>            
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

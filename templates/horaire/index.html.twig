@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ horaire.jour }} {% endblock %}
+
+{% block content %}
+{% include 'helpers/form/_delete_form.html.twig' %}
+    <section>               
+         <div class="container px-4 px-lg-5 py-3">
+            {# Titre de la page #}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{ horaire.jour }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 py-3">
+            <p><strong>Jour: </strong><br>{{ horaire.jour }}</p>
+            <p><strong>Heure d'ouverture: </strong><br>{{ horaire.heureouverture|date('H:i') }}</p>
+            <p><strong>Heure de fermeture: </strong><br>{{ horaire.heurefermeture|date('H:i') }}</p>
+        </div>        
+        <div class="container px-4 px-lg-5 py-3">
+            <div class="row" role="alert">
+                <div class="col-xs-9 col-sm-10">
+                    <a href="{{ path('app_horaire_liste') }}" role="button" class="btn btn-secondary">Retour à la liste</a>
+                </div>
+                {% if (app.user and 'ROLE_ADMIN' in app.user.roles) or (app.user and 'ROLE_USE' in app.user.roles) %}
+                <div class="col-xs-3 col-sm-2">    
+                    <a href="JavaScript:InitDialog(YesNo,'Confirmation','Voulez-vous supprimer ?',() => { if (document.getElementById('diadialog').returnValue=='Yes') {document.getElementById('delete').action='{{ path('app_horaire_remove', {'id': horaire.horaireid}) }}';document.getElementById('_token').value='{{ csrf_token('delete' ~ horaire.horaireid) }}';document.getElementById('delete').submit();};});diadialog.showModal();" role="button" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path('app_horaire_edit', {'id': horaire.horaireid}) }}" role="button" class="btn btn-info">Modifier</a>
+                </div>
+                {% endif %}
+            </div>        
+        </div>
+    </section>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
