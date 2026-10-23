@@ -48,7 +48,6 @@ class CommandeType extends AbstractType
         // Date de la commande
         $builder->add('datecommande', DateType::class, [
             'label' => 'Date de la commande',
-            'format' => 'dd-MM-yyyy',
             'attr' => ['placeholder' => 'Date de la commande'],
             'required' => true,
             'constraints' => [
@@ -117,7 +116,6 @@ class CommandeType extends AbstractType
         // Date de la prestation
         $builder->add('dateprestation', DateType::class, [
             'label' => 'Date de la prestation',
-            'format' => 'dd-MM-yyyy',
             'attr' => ['placeholder' => 'Date de la prestation'],
             'required' => false,
             'constraints' => [

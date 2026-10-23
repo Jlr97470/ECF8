@@ -34,16 +34,16 @@ class PlatType extends AbstractType
             'label' => 'Photo du plat (1 Mo max)',
             'attr' => ['placeholder' => 'Photo du plat (1 Mo max)'],
             'constraints' => [
-                new FileConstraint([
-                    'maxSize' => '1M',
-                    'mimeTypes' => [
+                new FileConstraint(
+                    maxSize: '1M',
+                    mimeTypes: [
                         'image/jpeg',
                         'image/png',
                         'image/gif'
                     ],
-                    'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG ou GIF)',
-                    'maxSizeMessage' => 'La taille maximale du fichier est de 1 Mo' 
-                ])
+                    mimeTypesMessage: 'Veuillez télécharger une image valide (JPEG, PNG ou GIF)',
+                    maxSizeMessage: 'La taille maximale du fichier est de 1 Mo'
+                )
             ]
         ]);
 

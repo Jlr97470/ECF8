@@ -99,6 +99,7 @@
         }
     },
     "require-dev": {
+        "imagine/imagine": "^1.5",
         "phpunit/phpunit": "^13.4",
         "symfony/apache-pack": "*",
         "symfony/browser-kit": "8.1.*",
