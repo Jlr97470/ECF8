@@ -1,4 +1,4 @@
-Projet ECF : Vite & Gourmand Restauration.
+# Projet ECF : Vite & Gourmand Restauration.
 
 Symfony  8.1
 PHP 8.5.12
