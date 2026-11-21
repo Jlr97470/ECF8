@@ -9,6 +9,7 @@
 parameters:
     upload_directory: '%kernel.project_dir%/public/uploads'
     images_directory: '%kernel.project_dir%/public/images'
+    email_from: 'contact@deltainformatique.org'
     locale: 'fr'
 services:
     # default configuration for services in *this* file

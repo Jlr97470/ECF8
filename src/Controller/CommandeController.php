@@ -17,7 +17,6 @@ use App\Entity\Menu;
 use App\Entity\Horaire;
 use App\Entity\Utilisateur;
 use App\Form\CommandeType;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 class CommandeController extends AbstractController
 {
@@ -248,7 +247,7 @@ class CommandeController extends AbstractController
             $utilisateur = $commande->getUtilisateurId();
 
             $message = (new TemplatedEmail())
-                ->from($email)
+                ->from($this->getParameter('email_from'))
                 ->to($utilisateur->getEmail())
                 ->subject('Votre commande sur notre site Vite & Gourmand')
                 ->htmlTemplate('emails/commande.html.twig')
@@ -381,7 +380,7 @@ class CommandeController extends AbstractController
                 $utilisateur = $commande->getUtilisateurId();
 
                 $message = (new TemplatedEmail())
-                    ->from($email)
+                    ->from($this->getParameter('email_from'))
                     ->to($utilisateur->getEmail())
                     ->subject('Votre commande sur notre site Vite & Gourmand')
                     ->htmlTemplate('emails/commandeterminer.html.twig')

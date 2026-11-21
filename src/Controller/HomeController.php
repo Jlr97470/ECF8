@@ -75,7 +75,7 @@ class HomeController extends AbstractController
                 $user =  $possede->getUtilisateurId();
 
                 $message = (new TemplatedEmail())
-                    ->from($getmail)
+                    ->from($this->getParameter('email_from'))
                     ->to($user->getEmail())
                     ->subject('Demande de contact')
                     ->htmlTemplate('emails/contact.html.twig')
