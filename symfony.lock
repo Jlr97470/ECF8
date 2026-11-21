@@ -246,18 +246,18 @@
         ]
     },
     "symfony/stimulus-bundle": {
-        "version": "3.6",
+        "version": "3.7",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "3.3",
-            "ref": "30f7461c215766d446f3c990b2b18f08ff51386e"
+            "ref": "7ce779ee74ea8d8aae6afed73e8438af5a392b30"
         },
         "files": [
-            "./assets/controllers.json",
-            "./assets/controllers/csrf_protection_controller.js",
-            "./assets/controllers/hello_controller.js",
-            "./assets/stimulus_bootstrap.js"
+            "assets/controllers.json",
+            "assets/controllers/csrf_protection_controller.js",
+            "assets/controllers/hello_controller.js",
+            "assets/stimulus_bootstrap.js"
         ]
     },
     "symfony/translation": {
